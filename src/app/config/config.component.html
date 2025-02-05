@@ -1,0 +1,19 @@
+<div>
+  <mat-form-field>
+    <mat-label>Participant</mat-label>
+    <input matInput [(ngModel)]="newParticipant">
+  </mat-form-field>
+  <button mat-button (click)="addParticipant()">Add</button>
+</div>
+<div>
+  <mat-list>
+    <mat-list-item  *ngFor="let participant of people">
+      <div class="list-item">
+        <h3 mat-line>{{ participant }}</h3>
+        <button mat-icon-button (click)="removeParticipant(participant)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>
