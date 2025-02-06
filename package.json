@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "gh-build": "ng build --configuration=production --base-href /dailynator/",
+    "gh-deploy": "npx angular-cli-ghpages --dir=dist/dailynator",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
