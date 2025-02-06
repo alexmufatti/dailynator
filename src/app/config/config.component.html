@@ -1,17 +1,33 @@
-<div>
-  <mat-form-field>
-    <mat-label>Participant</mat-label>
-    <input matInput [(ngModel)]="newParticipant">
-  </mat-form-field>
-  <button mat-button (click)="addParticipant()">Add</button>
+<div class="form-container">
+  <div class="field-container">
+    <mat-form-field>
+      <mat-label>Project name</mat-label>
+      <input matInput [(ngModel)]="project">
+    </mat-form-field>
+  </div>
+  <div class="field-container">
+    <mat-form-field>
+      <mat-label>Participant</mat-label>
+      <input matInput [(ngModel)]="newParticipant" (keyup)="onFieldKeyUp($event)">
+    </mat-form-field>
+    <button mat-button (click)="addParticipant()">Add</button>
+  </div>
 </div>
-<div>
+<div class="list-container">
+  <h4>Participants</h4>
   <mat-list>
-    <mat-list-item  *ngFor="let participant of people">
+    <mat-list-item *ngFor="let participant of people; let  i = index">
       <div class="list-item">
-        <h3 mat-line>{{ participant }}</h3>
-        <button mat-icon-button (click)="removeParticipant(participant)">
+        <h3 mat-line [ngClass]="participant.present ? '' : 'away'">{{ participant.name }}</h3>
+        <button mat-icon-button (click)="removeParticipant(participant.name)">
           <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button (click)="togglePresence(i)">
+          <mat-icon>@if (participant.present) {
+            beach_access
+          } @else {
+            apartment
+          }</mat-icon>
         </button>
       </div>
     </mat-list-item>

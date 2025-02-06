@@ -1,0 +1,42 @@
+h1 {
+  text-align: center;
+}
+
+.name-container {
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  border: 1px solid var(--mat-sys-primary);
+  border-radius: 8px;
+  & > h2 {
+    font-weight: bold;
+  }
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.other-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.other-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 33%;
+}
+
+mat-list-item {
+  text-align: center;
+}

@@ -4,3 +4,28 @@
   padding: 10px;
   border-bottom: 1px solid #ccc;
 }
+
+h3.away {
+  text-decoration: line-through;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px;
+}

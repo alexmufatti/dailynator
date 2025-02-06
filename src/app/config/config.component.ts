@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, inject, model, OnInit, output, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
@@ -6,45 +6,71 @@ import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {MatLine} from "@angular/material/core";
 import {MatList, MatListItem} from "@angular/material/list";
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
+import {Participant} from '../models/Participant';
+import {StorageService} from '../storage.service';
 
 @Component({
   selector: 'app-config',
-    imports: [
-        FormsModule,
-        MatButton,
-        MatFormField,
-        MatIcon,
-        MatIconButton,
-        MatInput,
-        MatLabel,
-        MatLine,
-        MatList,
-        MatListItem,
-        NgForOf
-    ],
+  imports: [
+    FormsModule,
+    MatButton,
+    MatFormField,
+    MatIcon,
+    MatIconButton,
+    MatInput,
+    MatLabel,
+    MatLine,
+    MatList,
+    MatListItem,
+    NgForOf,
+    NgClass
+  ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.css'
 })
 export class ConfigComponent implements OnInit{
+  private readonly storage = inject(StorageService);
+  public configChanged = output()
   protected newParticipant = signal('');
-  protected people: string[] = [];
+  protected project = model('');
+  protected people: Participant[] = [];
 
   ngOnInit(): void {
-    this.people = localStorage.getItem('people') ? JSON.parse(localStorage.getItem('people')!) : [];
+    this.people = this.storage.getPeople();
+    this.project.subscribe(() => {
+      this.save();
+    });
   }
 
   protected addParticipant() {
     if (this.newParticipant()) {
-      this.people.push(this.newParticipant());
-      localStorage.setItem('people', JSON.stringify(this.people));
+      this.people.push({ name: this.newParticipant(), present: true });
+      this.save();
       this.newParticipant.set('');
     }
   }
 
+  private save() {
+    this.storage.setPeople(this.people);
+    this.storage.setProject(this.project());
+    this.configChanged.emit()
+  }
+
+  protected togglePresence(participantIndex: number) {
+    this.people[participantIndex].present = !this.people[participantIndex].present;
+    this.save();
+  }
+
   protected removeParticipant(participant: string) {
-    const index = this.people.indexOf(participant);
+    const index = this.people.findIndex(p=> p.name === participant);
     this.people.splice(index, 1);
-    localStorage.setItem('people', JSON.stringify(this.people));
+    this.save();
+  }
+
+  protected onFieldKeyUp(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.addParticipant();
+    }
   }
 }

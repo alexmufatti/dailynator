@@ -1,18 +1,43 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+<h1> {{ title }} @if(project) { for {{project}}} </h1>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="end" >
   <mat-tab label="Daily">
     <div>
+      <div class="name-container">
       @if (remaining.length) {
-        <h1>{{ selectedText() }}</h1>
-        <button mat-button (click)="selectNext()">Next</button>
-        <button mat-button (click)="skip()">Skip</button>
+        <h2>{{ selectedText() }}</h2>
 
       } @else {
         <h1>Done for today!</h1>
       }
-      <button mat-button (click)="reset()">Reset</button>
+      </div>
+      <div class="button-container">
+      @if (remaining.length) {
+      <button mat-flat-button  (click)="selectNext()">Next</button>
+      <button mat-flat-button (click)="skip()">Skip</button>
+      }
+      <button mat-flat-button (click)="reset()">Reset</button>
+      </div>
+      <div class="other-container">
+        <div class="other-list">
+          <h4>Missing</h4>
+          <mat-list>
+            <mat-list-item *ngFor="let participant of remaining">
+              {{ participant.name }}
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div class="other-list">
+          <h4>Done</h4>
+          <mat-list>
+            <mat-list-item *ngFor="let participant of done">
+              {{ participant.name }}
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
     </div>
   </mat-tab>
   <mat-tab label="Config">
-    <app-config />
+    <app-config (configChanged)="reset()" />
   </mat-tab>
 </mat-tab-group>
