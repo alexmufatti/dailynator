@@ -1,4 +1,5 @@
-<h1> {{ title }} @if(project) { for {{project}}} </h1>
+<div>
+<h1 class="mat-display-large"> {{ title }} @if(project) { for {{project}}} </h1>
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="end" >
   <mat-tab label="Daily">
     <div>
@@ -41,3 +42,4 @@
     <app-config (configChanged)="reset()" />
   </mat-tab>
 </mat-tab-group>
+</div>
