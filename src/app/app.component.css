@@ -9,3 +9,15 @@ h1 {
   text-shadow: 2px 2px 0 orange, 4px 4px 0 yellow, 6px 6px 0 green, 8px 8px 0 red, 10px 10px 0 purple;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & img {
+    height: 24px;
+  }
+
+  & .title {
+    flex-grow: 1;
+  }
+}
