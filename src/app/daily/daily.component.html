@@ -1,0 +1,39 @@
+<div>
+  <div class="name-container">
+    @if (remaining.length) {
+      <h2>{{ selectedText() }}</h2>
+
+    } @else {
+      <h1>Done for today!</h1>
+    }
+  </div>
+  <div class="button-container">
+    @if (remaining.length) {
+      <button mat-flat-button  (click)="selectNext()">Next</button>
+      <button mat-flat-button (click)="skip()">Skip</button>
+    }
+    <button mat-flat-button (click)="reset()">Reset</button>
+  </div>
+  <div class="other-container">
+    <mat-card class="other-list">
+      <mat-card-header>
+        <mat-card-title>Missing</mat-card-title>
+      </mat-card-header>
+      <mat-list>
+        <mat-list-item *ngFor="let participant of remaining">
+          {{ participant.name }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+    <mat-card class="other-list">
+      <mat-card-header>
+        <mat-card-title>Done</mat-card-title>
+      </mat-card-header>
+      <mat-list>
+        <mat-list-item *ngFor="let participant of done">
+          {{ participant.name }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+  </div>
+</div>

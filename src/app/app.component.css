@@ -2,41 +2,10 @@ h1 {
   text-align: center;
 }
 
-.name-container {
-  min-height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-  border: 1px solid var(--mat-sys-primary);
-  border-radius: 8px;
-  & > h2 {
-    font-weight: bold;
-  }
+.shadow-text {
+  font-size: 50px;
+  font-weight: bold;
+  color: blue;
+  text-shadow: 2px 2px 0 orange, 4px 4px 0 yellow, 6px 6px 0 green, 8px 8px 0 red, 10px 10px 0 purple;
 }
 
-.button-container {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.other-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-top: 50px;
-}
-
-.other-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  min-width: 33%;
-}
-
-mat-list-item {
-  text-align: center;
-}

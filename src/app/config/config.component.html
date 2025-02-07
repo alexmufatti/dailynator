@@ -13,23 +13,29 @@
     <button mat-button (click)="addParticipant()">Add</button>
   </div>
 </div>
+<mat-card class="participant-card">
+  <mat-card-header>
+    <mat-card-title>Participants</mat-card-title>
+  </mat-card-header>
 <div class="list-container">
-  <h4>Participants</h4>
   <mat-list>
     <mat-list-item *ngFor="let participant of people; let  i = index">
       <div class="list-item">
         <h3 mat-line [ngClass]="participant.present ? '' : 'away'">{{ participant.name }}</h3>
-        <button mat-icon-button (click)="removeParticipant(participant.name)">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <button mat-icon-button (click)="togglePresence(i)">
-          <mat-icon>@if (participant.present) {
-            beach_access
-          } @else {
-            apartment
-          }</mat-icon>
-        </button>
+        <div class="item-button-container">
+          <button mat-icon-button (click)="removeParticipant(participant.name)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button (click)="togglePresence(i)">
+            <mat-icon>@if (participant.present) {
+              beach_access
+            } @else {
+              apartment
+            }</mat-icon>
+          </button>
+        </div>
       </div>
     </mat-list-item>
   </mat-list>
 </div>
+</mat-card>

@@ -1,0 +1,34 @@
+
+.name-container {
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  border: 1px solid var(--mat-sys-primary);
+  border-radius: 8px;
+  & > h2 {
+    font-weight: bold;
+  }
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.other-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 10px;
+  justify-content: center;
+  margin-top: 50px;
+  gap: 20px;
+}
+
+.other-list {
+  min-width: 400px;
+}

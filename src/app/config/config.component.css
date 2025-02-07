@@ -1,6 +1,7 @@
 .list-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #ccc;
 }
@@ -28,4 +29,13 @@ h3.away {
   flex-direction: column;
   gap: 10px;
   margin: 20px;
+
+}
+
+mat-list-item {
+  border-bottom: 1px solid var(--mat-sys-on-surface);
+}
+
+.participant-card {
+  max-width: 500px;
 }

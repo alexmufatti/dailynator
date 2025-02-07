@@ -9,6 +9,8 @@ import {MatList, MatListItem} from "@angular/material/list";
 import {NgClass, NgForOf} from "@angular/common";
 import {Participant} from '../models/Participant';
 import {StorageService} from '../storage.service';
+import {MatCard, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {CommunicationService} from '../communication.service';
 
 @Component({
   selector: 'app-config',
@@ -24,14 +26,18 @@ import {StorageService} from '../storage.service';
     MatList,
     MatListItem,
     NgForOf,
-    NgClass
+    NgClass,
+    MatCard,
+    MatCardTitle,
+    MatCardHeader
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.css'
 })
 export class ConfigComponent implements OnInit{
   private readonly storage = inject(StorageService);
-  public configChanged = output()
+  private readonly communication = inject(CommunicationService);
+
   protected newParticipant = signal('');
   protected project = model('');
   protected people: Participant[] = [];
@@ -54,7 +60,7 @@ export class ConfigComponent implements OnInit{
   private save() {
     this.storage.setPeople(this.people);
     this.storage.setProject(this.project());
-    this.configChanged.emit()
+    this.communication.changeMessage('aa')
   }
 
   protected togglePresence(participantIndex: number) {
