@@ -1,4 +1,4 @@
-import {Component, computed, inject, input, model, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, computed, effect, inject, OnDestroy, signal} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatList, MatListItem} from "@angular/material/list";
@@ -22,7 +22,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './daily.component.html',
   styleUrl: './daily.component.css'
 })
-export class DailyComponent implements OnInit,OnDestroy{
+export class DailyComponent implements OnDestroy {
   private readonly storage = inject(StorageService);
   protected next = signal<Participant | undefined>(undefined)
   protected selectedText = computed(() => {
@@ -30,26 +30,27 @@ export class DailyComponent implements OnInit,OnDestroy{
   });
   private readonly communication = inject(CommunicationService);
 
-
   protected people: Participant[] = [];
   protected available: Participant[] = [];
   protected remaining: Participant[] = [];
   protected done: Participant[] = [];
-  private communicationSubscription: Subscription;
+  private readonly communicationSubscription: Subscription;
+  private readonly teamsEffect?: ReturnType<typeof effect>;
 
   constructor() {
     this.communicationSubscription = this.communication.currentMessage.subscribe(() => this.reset());
+    this.teamsEffect = effect(() => {
+      this.people = this.storage.getPeople();
+      this.available = this.people.filter(p => p.present);
+      this.remaining = this.available.slice(0);
+      this.done = [];
+      this.next.set(undefined);
+    });
   }
 
   ngOnDestroy(): void {
     this.communicationSubscription.unsubscribe();
-    }
-
-  ngOnInit(): void {
-    this.people = this.storage.getPeople()
-    this.available = this.storage.getPeople().filter(p => p.present);
-    this.remaining = this.available.slice(0);
-    this.done = [];
+    this.teamsEffect?.destroy();
   }
 
   protected selectNext() {
@@ -75,7 +76,10 @@ export class DailyComponent implements OnInit,OnDestroy{
 
   protected reset() {
     console.log('reset')
-    this.ngOnInit()
+    this.people = this.storage.getPeople();
+    this.available = this.people.filter(p => p.present);
+    this.remaining = this.available.slice(0);
+    this.done = [];
     this.next.set(undefined);
   }
 

@@ -1,3 +1,63 @@
+.config-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.team-card, .project-card {
+  width: 100%;
+}
+
+.team-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.full-width {
+  flex: 1;
+  min-width: 250px;
+}
+
+.team-select-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.rename-section {
+  background-color: rgba(63, 81, 181, 0.05);
+  padding: 12px;
+  border-radius: 4px;
+  border-left: 4px solid #3f51b5;
+}
+
+.create-team-section {
+  margin-top: 8px;
+}
+
+.add-participant-section {
+  margin: 20px;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+
+mat-divider {
+  margin: 12px 0;
+}
+
 .list-item {
   display: flex;
   align-items: center;
@@ -10,26 +70,11 @@ h3.away {
   text-decoration: line-through;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 20px;
-}
-
-.field-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-}
-
 .list-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin: 20px;
-
 }
 
 mat-list-item {
@@ -37,5 +82,19 @@ mat-list-item {
 }
 
 .participant-card {
-  max-width: 500px;
+  max-width: 100%;
 }
+
+button mat-icon {
+  margin-right: 4px;
+}
+
+mat-card-header {
+  margin-bottom: 16px;
+}
+
+mat-card-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
