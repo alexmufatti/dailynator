@@ -1,16 +1,80 @@
-<div class="form-container">
-  <div class="field-container">
-    <mat-form-field>
-      <mat-label>Project name</mat-label>
-      <input matInput [(ngModel)]="project">
+<div class="config-container">
+  <!-- Team Management Section -->
+  <mat-card class="team-card">
+    <mat-card-header>
+      <mat-card-title>Team Management</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="team-section">
+        <div class="field-container">
+          <mat-form-field appearance="outline" class="team-select-field">
+            <mat-label>Current Team</mat-label>
+            <mat-select [value]="activeTeamId()" (selectionChange)="selectTeam($event)">
+              <mat-option *ngFor="let team of teams()" [value]="team.id">
+                {{ team.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="startRename(selectedTeam()!)" [disabled]="!selectedTeam()">
+            <mat-icon>edit</mat-icon> Rename
+          </button>
+          <button mat-raised-button color="warn" (click)="deleteTeam(activeTeamId())" [disabled]="teams().length === 1">
+            <mat-icon>delete</mat-icon> Delete
+          </button>
+        </div>
+
+        <div class="field-container rename-section" *ngIf="renamingTeamId()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Rename "{{selectedTeam()?.name}}"</mat-label>
+            <input matInput [(ngModel)]="renameValue" (keyup.enter)="confirmRename()">
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="confirmRename()" [disabled]="!renameValue().trim()">
+            <mat-icon>check</mat-icon> Save
+          </button>
+          <button mat-raised-button (click)="cancelRename()">
+            <mat-icon>close</mat-icon> Cancel
+          </button>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="field-container create-team-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Create New Team</mat-label>
+            <input matInput [(ngModel)]="newTeamName" placeholder="Enter team name" (keyup.enter)="createTeam()">
+          </mat-form-field>
+          <button mat-raised-button color="accent" (click)="createTeam()" [disabled]="!newTeamName().trim()">
+            <mat-icon>add</mat-icon> Create Team
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Project Configuration Section -->
+  <mat-card class="project-card">
+    <mat-card-header>
+      <mat-card-title>Project Configuration</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="field-container">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Project Name</mat-label>
+          <input matInput [(ngModel)]="project" placeholder="Enter project name">
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Participant Management Section -->
+  <div class="field-container add-participant-section">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Add Participant</mat-label>
+      <input matInput [(ngModel)]="newParticipant" (keyup)="onFieldKeyUp($event)" placeholder="Enter participant name">
     </mat-form-field>
-  </div>
-  <div class="field-container">
-    <mat-form-field>
-      <mat-label>Participant</mat-label>
-      <input matInput [(ngModel)]="newParticipant" (keyup)="onFieldKeyUp($event)">
-    </mat-form-field>
-    <button mat-button (click)="addParticipant()">Add</button>
+    <button mat-raised-button color="primary" (click)="addParticipant()" [disabled]="!newParticipant()">
+      <mat-icon>person_add</mat-icon> Add
+    </button>
   </div>
 </div>
 <mat-card class="participant-card">

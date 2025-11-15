@@ -1,15 +1,10 @@
-import {Component, computed, inject, model, OnInit, signal} from '@angular/core';
+import {Component, effect, inject, model, signal} from '@angular/core';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
-import {MatButton} from '@angular/material/button';
 import {FormsModule} from '@angular/forms';
 import {ConfigComponent} from './config/config.component';
 import {StorageService} from './storage.service';
-import {Participant} from './models/Participant';
-import {MatList, MatListItem} from '@angular/material/list';
-import {NgForOf} from '@angular/common';
-import {MatCard, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {DailyComponent} from './daily/daily.component';
-import {CommunicationService} from './communication.service';
+import {Team} from './models/Team';
 
 @Component({
   selector: 'app-root',
@@ -17,14 +12,22 @@ import {CommunicationService} from './communication.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   private readonly storage = inject(StorageService);
-  protected project = '';
+  protected project = signal('');
   title = 'Dailynator';
   protected resetInvoker = model<number>(0);
+  protected teams = signal<Team[]>([]);
+  protected activeTeam = signal<Team | undefined>(undefined);
 
-  ngOnInit(): void {
-    this.project = this.storage.getProject();
+  constructor() {
+    effect(() => {
+      const teams = this.storage.getTeams()();
+      this.teams.set(teams);
+      const active = this.storage.getActiveTeam();
+      this.activeTeam.set(active);
+      this.project.set(active?.project ?? '');
+    });
   }
 
   protected reset() {
