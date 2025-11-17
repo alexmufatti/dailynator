@@ -2,6 +2,18 @@ h1 {
   text-align: center;
 }
 
+.content {
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+
+  & > * {
+    width: 100%;
+  }
+
+  margin: 0 auto;
+}
+
 .shadow-text {
   font-size: 50px;
   font-weight: bold;
@@ -13,6 +25,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   & img {
     height: 24px;
   }

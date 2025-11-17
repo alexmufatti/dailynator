@@ -6,12 +6,18 @@
     <div><a class="github-link" href="https://github.com/alexmufatti/dailynator" target="_blank">
     <img class="github-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub">
   </a></div></div>
+  <div class="content">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="end" >
   <mat-tab label="Daily">
     <app-daily />
   </mat-tab>
   <mat-tab label="Config">
-    <app-config />
+    @defer (on viewport) {
+      <app-config />
+    } @placeholder {
+      <div style="padding: 20px; text-align: center;">Click to load config...</div>
+    }
   </mat-tab>
 </mat-tab-group>
+  </div>
 </div>

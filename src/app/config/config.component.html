@@ -11,23 +11,27 @@
             <h3>Current Team: {{ selectedTeam()?.name }}</h3>
           </div>
           <button mat-raised-button color="primary" (click)="startRename(selectedTeam()!)" [disabled]="!selectedTeam()">
-            <mat-icon>edit</mat-icon> Rename
+            <mat-icon>edit</mat-icon>
+            Rename
           </button>
           <button mat-raised-button color="warn" (click)="deleteTeam(activeTeamId())" [disabled]="teams().length === 1">
-            <mat-icon>delete</mat-icon> Delete
+            <mat-icon>delete</mat-icon>
+            Delete
           </button>
         </div>
 
         <div class="field-container rename-section" *ngIf="renamingTeamId()">
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Rename "{{selectedTeam()?.name}}"</mat-label>
+            <mat-label>Rename "{{ selectedTeam()?.name }}"</mat-label>
             <input matInput [(ngModel)]="renameValue" (keyup.enter)="confirmRename()">
           </mat-form-field>
           <button mat-raised-button color="primary" (click)="confirmRename()" [disabled]="!renameValue().trim()">
-            <mat-icon>check</mat-icon> Save
+            <mat-icon>check</mat-icon>
+            Save
           </button>
           <button mat-raised-button (click)="cancelRename()">
-            <mat-icon>close</mat-icon> Cancel
+            <mat-icon>close</mat-icon>
+            Cancel
           </button>
         </div>
 
@@ -39,7 +43,8 @@
             <input matInput [(ngModel)]="newTeamName" placeholder="Enter team name" (keyup.enter)="createTeam()">
           </mat-form-field>
           <button mat-raised-button color="accent" (click)="createTeam()" [disabled]="!newTeamName().trim()">
-            <mat-icon>add</mat-icon> Create Team
+            <mat-icon>add</mat-icon>
+            Create Team
           </button>
         </div>
       </div>
@@ -54,7 +59,8 @@
       <input matInput [(ngModel)]="newParticipant" (keyup)="onFieldKeyUp($event)" placeholder="Enter participant name">
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="addParticipant()" [disabled]="!newParticipant()">
-      <mat-icon>person_add</mat-icon> Add
+      <mat-icon>person_add</mat-icon>
+      Add
     </button>
   </div>
 </div>
@@ -62,25 +68,25 @@
   <mat-card-header>
     <mat-card-title>Participants</mat-card-title>
   </mat-card-header>
-<div class="list-container">
-  <mat-list>
-    <mat-list-item *ngFor="let participant of people; let  i = index">
-      <div class="list-item">
-        <h3 mat-line [ngClass]="participant.present ? '' : 'away'">{{ participant.name }}</h3>
-        <div class="item-button-container">
-          <button mat-icon-button (click)="removeParticipant(participant.name)">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-icon-button (click)="togglePresence(i)">
-            <mat-icon>@if (participant.present) {
-              beach_access
-            } @else {
-              apartment
-            }</mat-icon>
-          </button>
+  <div class="list-container">
+    <mat-list>
+      <mat-list-item *ngFor="let participant of people; let  i = index">
+        <div class="list-item">
+          <h3 mat-line [ngClass]="participant.present ? '' : 'away'">{{ participant.name }}</h3>
+          <div class="item-button-container">
+            <button mat-icon-button (click)="removeParticipant(participant.name)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button (click)="togglePresence(i)">
+              <mat-icon>@if (participant.present) {
+                beach_access
+              } @else {
+                apartment
+              }</mat-icon>
+            </button>
+          </div>
         </div>
-      </div>
-    </mat-list-item>
-  </mat-list>
-</div>
+      </mat-list-item>
+    </mat-list>
+  </div>
 </mat-card>
