@@ -1,17 +1,17 @@
-import {Component, computed, effect, inject, model, OnInit, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {MatLine, MatOption} from "@angular/material/core";
+import {MatLine} from "@angular/material/core";
 import {MatList, MatListItem} from "@angular/material/list";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {Participant} from '../models/Participant';
 import {StorageService} from '../storage.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {CommunicationService} from '../communication.service';
-import {MatSelect, MatSelectChange} from '@angular/material/select';
+
 import {Team} from '../models/Team';
 import {MatDivider} from '@angular/material/divider';
 
@@ -34,20 +34,17 @@ import {MatDivider} from '@angular/material/divider';
     MatCardContent,
     MatCardTitle,
     MatCardHeader,
-    MatSelect,
-    MatOption,
     NgIf,
     MatDivider
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.css'
 })
-export class ConfigComponent implements OnInit{
+export class ConfigComponent {
   private readonly storage = inject(StorageService);
   private readonly communication = inject(CommunicationService);
 
   protected newParticipant = signal('');
-  protected project = model('');
   protected people: Participant[] = [];
   protected teams = signal<Team[]>([]);
   protected activeTeamId = signal<string>('');
@@ -62,16 +59,9 @@ export class ConfigComponent implements OnInit{
       this.activeTeamId.set(this.storage.getActiveTeamId()());
       const activeTeam = this.storage.getActiveTeam();
       this.people = activeTeam?.participants ?? [];
-      this.project.set(activeTeam?.project ?? '');
       if (this.renamingTeamId() && this.renamingTeamId() === activeTeam?.id) {
         this.renameValue.set(activeTeam?.name ?? '');
       }
-    });
-  }
-
-  ngOnInit(): void {
-    this.project.subscribe(() => {
-      this.save();
     });
   }
 
@@ -85,7 +75,6 @@ export class ConfigComponent implements OnInit{
 
   private save() {
     this.storage.setPeople(this.people);
-    this.storage.setProject(this.project());
     this.communication.changeMessage('aa')
   }
 
@@ -112,11 +101,6 @@ export class ConfigComponent implements OnInit{
   protected createTeam() {
     this.storage.addTeam(this.newTeamName());
     this.newTeamName.set('');
-    this.communication.changeMessage('team-changed');
-  }
-
-  protected selectTeam(event: MatSelectChange) {
-    this.storage.setActiveTeam(event.value);
     this.communication.changeMessage('team-changed');
   }
 

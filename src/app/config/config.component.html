@@ -7,14 +7,9 @@
     <mat-card-content>
       <div class="team-section">
         <div class="field-container">
-          <mat-form-field appearance="outline" class="team-select-field">
-            <mat-label>Current Team</mat-label>
-            <mat-select [value]="activeTeamId()" (selectionChange)="selectTeam($event)">
-              <mat-option *ngFor="let team of teams()" [value]="team.id">
-                {{ team.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <div class="current-team-info">
+            <h3>Current Team: {{ selectedTeam()?.name }}</h3>
+          </div>
           <button mat-raised-button color="primary" (click)="startRename(selectedTeam()!)" [disabled]="!selectedTeam()">
             <mat-icon>edit</mat-icon> Rename
           </button>
@@ -51,20 +46,6 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- Project Configuration Section -->
-  <mat-card class="project-card">
-    <mat-card-header>
-      <mat-card-title>Project Configuration</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="field-container">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Project Name</mat-label>
-          <input matInput [(ngModel)]="project" placeholder="Enter project name">
-        </mat-form-field>
-      </div>
-    </mat-card-content>
-  </mat-card>
 
   <!-- Participant Management Section -->
   <div class="field-container add-participant-section">

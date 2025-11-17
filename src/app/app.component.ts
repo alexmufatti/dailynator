@@ -14,7 +14,6 @@ import {Team} from './models/Team';
 })
 export class AppComponent {
   private readonly storage = inject(StorageService);
-  protected project = signal('');
   title = 'Dailynator';
   protected resetInvoker = model<number>(0);
   protected teams = signal<Team[]>([]);
@@ -26,7 +25,6 @@ export class AppComponent {
       this.teams.set(teams);
       const active = this.storage.getActiveTeam();
       this.activeTeam.set(active);
-      this.project.set(active?.project ?? '');
     });
   }
 

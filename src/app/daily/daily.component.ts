@@ -7,6 +7,10 @@ import {StorageService} from '../storage.service';
 import {Participant} from '../models/Participant';
 import {CommunicationService} from '../communication.service';
 import {Subscription} from 'rxjs';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatOption} from '@angular/material/core';
+import {MatSelect, MatSelectChange} from '@angular/material/select';
+import {Team} from '../models/Team';
 
 @Component({
   selector: 'app-daily',
@@ -17,7 +21,11 @@ import {Subscription} from 'rxjs';
         MatCardTitle,
         MatList,
         MatListItem,
-        NgForOf
+        NgForOf,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        MatOption
     ],
   templateUrl: './daily.component.html',
   styleUrl: './daily.component.css'
@@ -34,12 +42,16 @@ export class DailyComponent implements OnDestroy {
   protected available: Participant[] = [];
   protected remaining: Participant[] = [];
   protected done: Participant[] = [];
+  protected teams = signal<Team[]>([]);
+  protected activeTeamId = signal<string>('');
   private readonly communicationSubscription: Subscription;
   private readonly teamsEffect?: ReturnType<typeof effect>;
 
   constructor() {
     this.communicationSubscription = this.communication.currentMessage.subscribe(() => this.reset());
     this.teamsEffect = effect(() => {
+      this.teams.set(this.storage.getTeams()());
+      this.activeTeamId.set(this.storage.getActiveTeamId()());
       this.people = this.storage.getPeople();
       this.available = this.people.filter(p => p.present);
       this.remaining = this.available.slice(0);
@@ -89,5 +101,10 @@ export class DailyComponent implements OnDestroy {
 
       this.next.set(this.remaining[index]);
     }
+  }
+
+  protected selectTeam(event: MatSelectChange) {
+    this.storage.setActiveTeam(event.value);
+    this.communication.changeMessage('team-changed');
   }
 }

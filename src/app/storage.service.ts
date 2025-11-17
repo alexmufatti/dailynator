@@ -21,12 +21,10 @@ export class StorageService {
     const rawTeams = localStorage.getItem(this.teamsKey);
     const rawActiveId = localStorage.getItem(this.activeTeamKey);
     const legacyPeople = localStorage.getItem('people');
-    const legacyProject = localStorage.getItem('project');
 
     if (!rawTeams) {
       const defaultTeam = this.createDefaultTeam({
-        participants: legacyPeople ? JSON.parse(legacyPeople) : [],
-        project: legacyProject ?? ''
+        participants: legacyPeople ? JSON.parse(legacyPeople) : []
       });
       this.persistState([defaultTeam], defaultTeam.id);
       localStorage.removeItem('people');
@@ -44,7 +42,6 @@ export class StorageService {
     teams = teams.map((team) => ({
       id: team.id ?? uuidv4(),
       name: team.name ?? 'Team 1',
-      project: team.project ?? '',
       participants: Array.isArray(team.participants) ? team.participants : []
     }));
 
@@ -56,7 +53,6 @@ export class StorageService {
     return {
       id: uuidv4(),
       name: 'Team 1',
-      project: data?.project ?? '',
       participants: data?.participants ?? []
     };
   }
@@ -98,7 +94,6 @@ export class StorageService {
     const team: Team = {
       id: uuidv4(),
       name: trimmed || `Team ${this.teams.length + 1}`,
-      project: '',
       participants: []
     };
     this.updateTeams((teams) => [...teams, team]);
@@ -144,16 +139,5 @@ export class StorageService {
       this.addTeam('Team 1');
     }
     this.patchTeam(this.activeTeamId, (team) => ({ ...team, participants: people }));
-  }
-
-  setProject(project: string) {
-    if (!this.activeTeamId) {
-      this.addTeam('Team 1');
-    }
-    this.patchTeam(this.activeTeamId, (team) => ({ ...team, project }));
-  }
-
-  getProject(): string {
-    return this.getActiveTeam()?.project ?? '';
   }
 }
