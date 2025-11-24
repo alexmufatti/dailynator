@@ -18,6 +18,7 @@
 .name-container {
   min-height: 60px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 8px;
@@ -25,6 +26,7 @@
   border: 2px solid var(--mat-sys-primary);
   border-radius: 8px;
   box-sizing: border-box;
+  position: relative;
 
   & > h2 {
     font-weight: bold;
@@ -81,4 +83,24 @@
     height: 40px;
     font-size: 0.9rem;
   }
+}
+
+.daily-joke-wrapper {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.daily-joke {
+  margin: 15px 0 0;
+  text-align: center;
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+
+.daily-author {
+  margin-top: 2px;
+  margin-bottom: 15px;
+  font-size: 0.6rem;
+  text-align: right;
+  opacity: 0.6;
 }

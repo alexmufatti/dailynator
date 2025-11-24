@@ -1,11 +1,21 @@
 <div class="daily-container">
+  @if (dailyJoke) {
+    <div class="daily-joke-wrapper">
+      <h4 class="daily-joke">{{ dailyJoke }}</h4>
+      @if (dailyAuthor) {
+        <div class="daily-author">{{ dailyAuthor }}</div>
+      }
+    </div>
+  }
   <div class="team-selector">
     <mat-form-field appearance="outline">
       <mat-label>Team</mat-label>
       <mat-select [value]="activeTeamId()" (selectionChange)="selectTeam($event)">
-        <mat-option *ngFor="let team of teams()" [value]="team.id">
+        @for (team of teams(); track team.id) {
+        <mat-option [value]="team.id">
           {{ team.name }}
         </mat-option>
+        }
       </mat-select>
     </mat-form-field>
   </div>
@@ -30,9 +40,11 @@
           <mat-card-title>Missing ({{ remaining.length }})</mat-card-title>
         </mat-card-header>
         <mat-list>
-          <mat-list-item *ngFor="let participant of remaining">
+          @for (participant of remaining; track participant.name) {
+          <mat-list-item>
             {{ participant.name }}
           </mat-list-item>
+          }
         </mat-list>
       </mat-card>
     }
@@ -42,9 +54,11 @@
           <mat-card-title>Done ({{ done.length }})</mat-card-title>
         </mat-card-header>
         <mat-list>
-          <mat-list-item *ngFor="let participant of done">
+          @for (participant of done; track participant.name) {
+          <mat-list-item>
             {{ participant.name }}
           </mat-list-item>
+          }
         </mat-list>
       </mat-card>
     }

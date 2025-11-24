@@ -20,6 +20,19 @@
           </button>
         </div>
 
+        <div class="field-container" *ngIf="selectedTeam()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tipo di frase</mat-label>
+            <mat-select
+              [ngModel]="selectedTeam()!.subtitleSource || 'random'"
+              (ngModelChange)="changeSubtitleSource(selectedTeam()!, $event)">
+              <mat-option *ngFor="let opt of subtitleSourceOptions" [value]="opt.value">
+                {{ opt.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
         <div class="field-container rename-section" *ngIf="renamingTeamId()">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Rename "{{ selectedTeam()?.name }}"</mat-label>

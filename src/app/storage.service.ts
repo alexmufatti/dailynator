@@ -2,6 +2,8 @@ import { Injectable, signal } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
 import { Participant } from './models/Participant';
 import { Team } from './models/Team';
+import { DailySubtitleConfigService } from './services/daily-subtitleConfig.service';
+import type { DailySubtitleSourceType } from './models/DailySubtitleSourceType';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class StorageService {
   private readonly teamsSignal = signal<Team[]>([]);
   private readonly activeTeamIdSignal = signal<string>('');
 
-  constructor() {
+  constructor(private dailySubtitleConfig: DailySubtitleConfigService) {
     this.loadState();
   }
 
@@ -39,10 +41,13 @@ export class StorageService {
       return;
     }
 
+    const defaultSource = this.dailySubtitleConfig.getConfig().source;
+
     teams = teams.map((team) => ({
       id: team.id ?? uuidv4(),
       name: team.name ?? 'Team 1',
-      participants: Array.isArray(team.participants) ? team.participants : []
+      participants: Array.isArray(team.participants) ? team.participants : [],
+      subtitleSource: team.subtitleSource ?? defaultSource,
     }));
 
     const fallbackActiveId = teams[0].id;
@@ -50,10 +55,12 @@ export class StorageService {
   }
 
   private createDefaultTeam(data?: Partial<Omit<Team, 'id' | 'name'>>) : Team {
+    const defaultSource = this.dailySubtitleConfig.getConfig().source;
     return {
       id: uuidv4(),
       name: 'Team 1',
-      participants: data?.participants ?? []
+      participants: data?.participants ?? [],
+      subtitleSource: data?.subtitleSource ?? defaultSource,
     };
   }
 
@@ -94,7 +101,8 @@ export class StorageService {
     const team: Team = {
       id: uuidv4(),
       name: trimmed || `Team ${this.teams.length + 1}`,
-      participants: []
+      participants: [],
+      subtitleSource: this.dailySubtitleConfig.getConfig().source,
     };
     this.updateTeams((teams) => [...teams, team]);
     this.setActiveTeam(team.id);
@@ -139,5 +147,9 @@ export class StorageService {
       this.addTeam('Team 1');
     }
     this.patchTeam(this.activeTeamId, (team) => ({ ...team, participants: people }));
+  }
+
+  setTeamSubtitleSource(id: string, source: DailySubtitleSourceType) {
+    this.patchTeam(id, (team) => ({ ...team, subtitleSource: source }));
   }
 }

@@ -1,8 +1,7 @@
-import {Component, computed, effect, inject, OnDestroy, signal} from '@angular/core';
+import {Component, computed, effect, inject, OnDestroy, signal, OnInit} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatList, MatListItem} from "@angular/material/list";
-import {NgForOf} from "@angular/common";
 import {StorageService} from '../storage.service';
 import {Participant} from '../models/Participant';
 import {CommunicationService} from '../communication.service';
@@ -11,26 +10,27 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatOption} from '@angular/material/core';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {Team} from '../models/Team';
+import { DailySubtitleService, DailySubtitleResult } from '../services/daily-subtitle.service';
+import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType';
 
 @Component({
   selector: 'app-daily',
-    imports: [
-        MatButton,
-        MatCard,
-        MatCardHeader,
-        MatCardTitle,
-        MatList,
-        MatListItem,
-        NgForOf,
-        MatFormField,
-        MatLabel,
-        MatSelect,
-        MatOption
-    ],
+  imports: [
+    MatButton,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatList,
+    MatListItem,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption
+  ],
   templateUrl: './daily.component.html',
   styleUrl: './daily.component.css'
 })
-export class DailyComponent implements OnDestroy {
+export class DailyComponent implements OnDestroy, OnInit {
   private readonly storage = inject(StorageService);
   protected next = signal<Participant | undefined>(undefined)
   protected selectedText = computed(() => {
@@ -46,9 +46,22 @@ export class DailyComponent implements OnDestroy {
   protected activeTeamId = signal<string>('');
   private readonly communicationSubscription: Subscription;
   private readonly teamsEffect?: ReturnType<typeof effect>;
+  dailyJoke?: string;
+  dailyAuthor?: string;
 
-  constructor() {
-    this.communicationSubscription = this.communication.currentMessage.subscribe(() => this.reset());
+  constructor(
+    private dailySubtitleService: DailySubtitleService,
+  ) {
+    this.communicationSubscription = this.communication.currentMessage.subscribe((message) => {
+      if (message === 'team-changed') {
+        this.reset();
+        void this.loadDailySubtitle();
+      } else if (message === 'daily-subtitle-config-changed') {
+        void this.loadDailySubtitle();
+      } else {
+        this.reset();
+      }
+    });
     this.teamsEffect = effect(() => {
       this.teams.set(this.storage.getTeams()());
       this.activeTeamId.set(this.storage.getActiveTeamId()());
@@ -58,6 +71,27 @@ export class DailyComponent implements OnDestroy {
       this.done = [];
       this.next.set(undefined);
     });
+  }
+
+  ngOnInit(): void {
+    this.loadDailySubtitle();
+  }
+
+  private getActiveTeamSubtitleSource(): DailySubtitleSourceType | undefined {
+    const team = this.storage.getActiveTeam();
+    return team?.subtitleSource;
+  }
+
+  private async loadDailySubtitle(): Promise<void> {
+    try {
+      const source = this.getActiveTeamSubtitleSource();
+      const result: DailySubtitleResult | undefined = await this.dailySubtitleService.getDailySubtitle(source);
+      this.dailyJoke = result?.text;
+      this.dailyAuthor = result?.author;
+    } catch {
+      this.dailyJoke = undefined;
+      this.dailyAuthor = undefined;
+    }
   }
 
   ngOnDestroy(): void {

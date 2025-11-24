@@ -14,6 +14,8 @@ import {CommunicationService} from '../communication.service';
 
 import {Team} from '../models/Team';
 import {MatDivider} from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
+import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType';
 
 @Component({
   selector: 'app-config',
@@ -35,7 +37,8 @@ import {MatDivider} from '@angular/material/divider';
     MatCardTitle,
     MatCardHeader,
     NgIf,
-    MatDivider
+    MatDivider,
+    MatSelectModule,
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.css'
@@ -52,6 +55,13 @@ export class ConfigComponent {
   protected renamingTeamId = signal<string | null>(null);
   protected renameValue = signal('');
   protected selectedTeam = computed(() => this.storage.getTeam(this.activeTeamId()));
+
+  protected readonly subtitleSourceOptions: { value: DailySubtitleSourceType; label: string }[] = [
+    { value: 'joke', label: 'Barzellette' },
+    { value: 'motivational', label: 'Frasi motivazionali' },
+    { value: 'random', label: 'Casuale' },
+    { value: 'disabled', label: 'Nessuna frase' },
+  ];
 
   constructor() {
     effect(() => {
@@ -126,6 +136,13 @@ export class ConfigComponent {
   protected onFieldKeyUp(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.addParticipant();
+    }
+  }
+
+  protected changeSubtitleSource(team: Team, source: DailySubtitleSourceType) {
+    this.storage.setTeamSubtitleSource(team.id, source);
+    if (team.id === this.activeTeamId()) {
+      this.communication.changeMessage('daily-subtitle-config-changed');
     }
   }
 }
