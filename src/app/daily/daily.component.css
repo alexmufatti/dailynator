@@ -42,7 +42,7 @@
 
 .button-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 8px;
   padding: 0 8px;
   margin-top: 12px;
