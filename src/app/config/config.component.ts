@@ -57,10 +57,10 @@ export class ConfigComponent {
   protected selectedTeam = computed(() => this.storage.getTeam(this.activeTeamId()));
 
   protected readonly subtitleSourceOptions: { value: DailySubtitleSourceType; label: string }[] = [
-    { value: 'joke', label: 'Barzellette' },
-    { value: 'motivational', label: 'Frasi motivazionali' },
-    { value: 'random', label: 'Casuale' },
-    { value: 'disabled', label: 'Nessuna frase' },
+    { value: 'joke', label: 'Joke' },
+    { value: 'motivational', label: 'Motivational' },
+    { value: 'random', label: 'Random' },
+    { value: 'disabled', label: 'None' },
   ];
 
   constructor() {
