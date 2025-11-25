@@ -2,16 +2,10 @@ h1 {
   text-align: center;
 }
 
-.content {
-  max-width: 600px;
-  display: flex;
-  justify-content: center;
-
-  & > * {
-    width: 100%;
-  }
-
+.app-shell {
   margin: 0 auto;
+  padding: 12px;
+  max-width: 440px;
 }
 
 .shadow-text {
@@ -23,12 +17,38 @@ h1 {
 
 .header {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  gap: 4px;
 
-  & .title {
-    flex-grow: 1;
+  & h1 {
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 600;
   }
+
+  & h2 {
+    font-size: 1.6rem;
+    margin: 1rem;
+    font-weight: 600;
+  }
+}
+
+.version {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant, #666);
+}
+
+.content {
+  width: 100%;
+}
+
+.placeholder {
+  padding: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--mat-sys-on-surface-variant, #666);
 }
 
 .footer {
@@ -39,11 +59,14 @@ h1 {
   font-size: 12px;
 }
 
-.version {
-  opacity: 0.7;
+.github-corner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  border: 0;
+  z-index: 1000;
 }
 
-/* GitHub Corner Ribbon */
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
 }
@@ -68,4 +91,3 @@ h1 {
     animation: octocat-wave 560ms ease-in-out;
   }
 }
-

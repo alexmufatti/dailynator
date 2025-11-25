@@ -1,66 +1,73 @@
 <div class="daily-container">
-  @if (dailyJoke) {
-    <div class="daily-joke-wrapper">
-      <h4 class="daily-joke">{{ dailyJoke }}</h4>
-      @if (dailyAuthor) {
-        <div class="daily-author">{{ dailyAuthor }}</div>
+  <header class="panel-header">
+    <div class="team-source">
+      <mat-form-field appearance="outline" class="team-field">
+        <mat-label>Team</mat-label>
+        <mat-select [value]="activeTeamId()" (selectionChange)="selectTeam($event)">
+          @for (team of teams(); track team.id) {
+          <mat-option [value]="team.id">
+            {{ team.name }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <!-- Subtitle source selection handled in config view. -->
+    </div>
+    @if (dailyJoke) {
+      <div class="daily-joke-wrapper">
+        <p class="daily-joke">{{ dailyJoke }}</p>
+        @if (dailyAuthor) {
+          <span class="daily-author">— {{ dailyAuthor }}</span>
+        }
+      </div>
+    }
+  </header>
+
+  <section class="focus-card">
+    <div class="name-container">
+      @if (remaining.length) {
+        <p class="label">Next up</p>
+        <h2>{{ next()?.name ?? 'Tap Next' }}</h2>
+      } @else {
+        <h2 class="done">Done for today!</h2>
       }
     </div>
-  }
-  <div class="team-selector">
-    <mat-form-field appearance="outline">
-      <mat-label>Team</mat-label>
-      <mat-select [value]="activeTeamId()" (selectionChange)="selectTeam($event)">
-        @for (team of teams(); track team.id) {
-        <mat-option [value]="team.id">
-          {{ team.name }}
-        </mat-option>
+    <div class="button-container">
+      @if (remaining.length) {
+        <button mat-flat-button color="primary" (click)="selectNext()">Next</button>
+        <button mat-stroked-button (click)="skip()">Skip</button>
+      }
+      <button mat-stroked-button color="accent" (click)="reset()">Reset</button>
+    </div>
+  </section>
+
+  <section class="lists">
+    <mat-card class="list-card">
+      <mat-card-header>
+        <mat-card-title>Remaining ({{ remaining.length }})</mat-card-title>
+      </mat-card-header>
+      <mat-list>
+        @for (participant of remaining; track participant.name) {
+        <mat-list-item>
+          {{ participant.name }}
+        </mat-list-item>
+        } @empty {
+        <mat-list-item>Nessuno in coda</mat-list-item>
         }
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="name-container">
-    @if (remaining.length) {
-      <h2>{{ selectedText() }}</h2>
-    } @else {
-      <h1>Done for today!</h1>
-    }
-  </div>
-  <div class="button-container">
-    @if (remaining.length) {
-      <button mat-raised-button color="primary" (click)="selectNext()">Next</button>
-      <button mat-raised-button (click)="skip()">Skip</button>
-    }
-    <button mat-raised-button color="accent" (click)="reset()">Reset</button>
-  </div>
-  <div class="other-container">
-    @if (remaining.length > 0) {
-      <mat-card class="other-list">
-        <mat-card-header>
-          <mat-card-title>Missing ({{ remaining.length }})</mat-card-title>
-        </mat-card-header>
-        <mat-list>
-          @for (participant of remaining; track participant.name) {
-          <mat-list-item>
-            {{ participant.name }}
-          </mat-list-item>
-          }
-        </mat-list>
-      </mat-card>
-    }
-    @if (done.length > 0) {
-      <mat-card class="other-list">
-        <mat-card-header>
-          <mat-card-title>Done ({{ done.length }})</mat-card-title>
-        </mat-card-header>
-        <mat-list>
-          @for (participant of done; track participant.name) {
-          <mat-list-item>
-            {{ participant.name }}
-          </mat-list-item>
-          }
-        </mat-list>
-      </mat-card>
-    }
-  </div>
+      </mat-list>
+    </mat-card>
+
+    <mat-card class="list-card" *ngIf="done.length">
+      <mat-card-header>
+        <mat-card-title>Done ({{ done.length }})</mat-card-title>
+      </mat-card-header>
+      <mat-list>
+        @for (participant of done; track participant.name) {
+        <mat-list-item>
+          {{ participant.name }}
+        </mat-list-item>
+        }
+      </mat-list>
+    </mat-card>
+  </section>
 </div>

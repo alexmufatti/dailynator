@@ -1,4 +1,5 @@
 import {Component, computed, effect, inject, OnDestroy, signal, OnInit} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatList, MatListItem} from "@angular/material/list";
@@ -16,6 +17,7 @@ import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType'
 @Component({
   selector: 'app-daily',
   imports: [
+    CommonModule,
     MatButton,
     MatCard,
     MatCardHeader,
@@ -44,6 +46,7 @@ export class DailyComponent implements OnDestroy, OnInit {
   protected done: Participant[] = [];
   protected teams = signal<Team[]>([]);
   protected activeTeamId = signal<string>('');
+  protected activeTeam = computed(() => this.teams().find((team) => team.id === this.activeTeamId()));
   private readonly communicationSubscription: Subscription;
   private readonly teamsEffect?: ReturnType<typeof effect>;
   dailyJoke?: string;

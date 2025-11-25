@@ -1,106 +1,111 @@
 .daily-container {
-  max-width: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  max-width: 420px;
+  margin: 0 auto;
 }
 
-.team-selector {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.team-selector mat-form-field {
+.team-source {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.team-field,
+.source-field {
   width: 100%;
+}
+
+.daily-joke-wrapper {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant, #444);
+}
+
+.daily-joke {
+  margin: 0;
+  font-style: italic;
+}
+
+.daily-author {
+  display: block;
+  text-align: right;
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+
+.focus-card {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--mat-sys-surface-container, #fff);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .name-container {
-  min-height: 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 8px;
-  padding: 12px;
-  border: 2px solid var(--mat-sys-primary);
-  border-radius: 8px;
-  box-sizing: border-box;
-  position: relative;
+  text-align: center;
+}
 
-  & > h2 {
-    font-weight: bold;
-    margin: 0;
-    text-align: center;
-    font-size: 1.2rem;
-  }
+.name-container .label {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mat-sys-on-surface-variant, #666);
+}
 
-  & > h1 {
-    margin: 0;
-    text-align: center;
-    font-size: 1.5rem;
-  }
+.name-container h2 {
+  margin: 4px 0 0;
+  font-size: 1.5rem;
+}
+
+.name-container .done {
+  color: var(--mat-sys-primary, #3f51b5);
 }
 
 .button-container {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   gap: 8px;
-  padding: 0 8px;
-  margin-top: 12px;
-
-  button {
-    width: 100%;
-  }
 }
 
-.other-container {
+.button-container button {
+  flex: 1;
+}
+
+.lists {
   display: flex;
   flex-direction: column;
-  padding: 8px;
-  margin-top: 20px;
   gap: 12px;
 }
 
-.other-list {
+.list-card {
   width: 100%;
-  box-sizing: border-box;
-
-  mat-card-header {
-    padding: 8px 16px;
-  }
-
-  mat-card-title {
-    font-size: 1rem;
-    margin: 0;
-  }
-
-  mat-list {
-    padding: 0;
-  }
-
-  mat-list-item {
-    height: 40px;
-    font-size: 0.9rem;
-  }
 }
 
-.daily-joke-wrapper {
-  width: 100%;
-  margin-top: 4px;
+.list-card mat-card-title {
+  font-size: 0.95rem;
 }
 
-.daily-joke {
-  margin: 15px 0 0;
-  text-align: center;
-  font-size: 0.7rem;
-  opacity: 0.75;
-}
+@media (min-width: 480px) {
+  .team-source {
+    flex-direction: row;
+  }
 
-.daily-author {
-  margin-top: 2px;
-  margin-bottom: 15px;
-  font-size: 0.6rem;
-  text-align: right;
-  opacity: 0.6;
+  .team-field,
+  .source-field {
+    flex: 1;
+  }
 }

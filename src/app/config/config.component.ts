@@ -4,9 +4,8 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {MatLine} from "@angular/material/core";
 import {MatList, MatListItem} from "@angular/material/list";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {NgClass} from "@angular/common";
 import {Participant} from '../models/Participant';
 import {StorageService} from '../storage.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
@@ -15,7 +14,9 @@ import {CommunicationService} from '../communication.service';
 import {Team} from '../models/Team';
 import {MatDivider} from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType';
+import { SUBTITLE_SOURCE_OPTIONS } from '../models/subtitle-source-options';
 
 @Component({
   selector: 'app-config',
@@ -27,18 +28,16 @@ import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType'
     MatIconButton,
     MatInput,
     MatLabel,
-    MatLine,
     MatList,
     MatListItem,
-    NgForOf,
     NgClass,
     MatCard,
     MatCardContent,
     MatCardTitle,
     MatCardHeader,
-    NgIf,
     MatDivider,
     MatSelectModule,
+    MatSnackBarModule,
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.css'
@@ -46,6 +45,7 @@ import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType'
 export class ConfigComponent {
   private readonly storage = inject(StorageService);
   private readonly communication = inject(CommunicationService);
+  private readonly snackBar = inject(MatSnackBar);
 
   protected newParticipant = signal('');
   protected people: Participant[] = [];
@@ -55,13 +55,7 @@ export class ConfigComponent {
   protected renamingTeamId = signal<string | null>(null);
   protected renameValue = signal('');
   protected selectedTeam = computed(() => this.storage.getTeam(this.activeTeamId()));
-
-  protected readonly subtitleSourceOptions: { value: DailySubtitleSourceType; label: string }[] = [
-    { value: 'joke', label: 'Joke' },
-    { value: 'motivational', label: 'Motivational' },
-    { value: 'random', label: 'Random' },
-    { value: 'disabled', label: 'None' },
-  ];
+  protected readonly subtitleSourceOptions = SUBTITLE_SOURCE_OPTIONS;
 
   constructor() {
     effect(() => {
@@ -144,5 +138,10 @@ export class ConfigComponent {
     if (team.id === this.activeTeamId()) {
       this.communication.changeMessage('daily-subtitle-config-changed');
     }
+    this.showSubtitleSavedToast(team.name);
+  }
+
+  private showSubtitleSavedToast(teamName: string) {
+    this.snackBar.open(`Sorgente aggiornata per ${teamName}`, 'OK', { duration: 3000 });
   }
 }

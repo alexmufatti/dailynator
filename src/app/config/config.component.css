@@ -98,3 +98,137 @@ mat-card-title {
   font-weight: 500;
 }
 
+.config-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.team-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.summary-copy h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 0 4px;
+}
+
+.helper-text {
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+.summary-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.panel-card {
+  width: 100%;
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.add-participant-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.participants-card mat-list-item {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.participant-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.participant-copy {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  min-width: 0;
+}
+
+.participant-copy .name {
+  font-weight: 500;
+}
+
+.participant-copy .name.away {
+  text-decoration: line-through;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.presence-chip {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(63, 81, 181, 0.12);
+  color: #3f51b5;
+  width: fit-content;
+}
+
+.presence-chip.away {
+  background: rgba(158, 158, 158, 0.2);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.item-button-container {
+  display: flex;
+  gap: 6px;
+}
+
+.participants-empty {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 16px 0 0;
+}
+
+@media (min-width: 640px) {
+  .summary-actions {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .add-participant-inline {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .add-participant-inline button {
+    align-self: flex-start;
+  }
+}
