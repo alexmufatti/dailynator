@@ -2,33 +2,149 @@ h1 {
   text-align: center;
 }
 
-.content {
-  max-width: 600px;
-  display: flex;
-  justify-content: center;
-
-  & > * {
-    width: 100%;
-  }
-
+.app-shell {
   margin: 0 auto;
+  padding: 12px;
+  max-width: 440px;
 }
 
 .shadow-text {
-  font-size: 50px;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: 700;
   color: blue;
   text-shadow: 2px 2px 0 orange, 4px 4px 0 yellow, 6px 6px 0 green, 8px 8px 0 red, 10px 10px 0 purple;
 }
 
+@media (min-width: 480px) {
+  .shadow-text {
+    font-size: 2.2rem;
+  }
+}
+
 .header {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
 
-  & .title {
-    flex-grow: 1;
+  & h1 {
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 600;
   }
+
+  & h2 {
+    font-size: 1.6rem;
+    margin: 1rem;
+    font-weight: 600;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.header-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.team-selector {
+  width: 100%;
+  max-width: 100%;
+}
+
+.team-selector ::ng-deep .mat-mdc-text-field-wrapper {
+  background: rgba(63, 81, 181, 0.04);
+  border-radius: 8px;
+}
+
+.team-selector ::ng-deep .mdc-notched-outline__leading,
+.team-selector ::ng-deep .mdc-notched-outline__trailing,
+.team-selector ::ng-deep .mdc-notched-outline__notch {
+  border-color: rgba(63, 81, 181, 0.2) !important;
+}
+
+.team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+.team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+  border-color: #3f51b5 !important;
+  border-width: 2px !important;
+}
+
+.team-selector ::ng-deep .mat-mdc-floating-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .team-selector ::ng-deep .mat-mdc-text-field-wrapper {
+    background: rgba(103, 126, 234, 0.08);
+  }
+
+  .team-selector ::ng-deep .mdc-notched-outline__leading,
+  .team-selector ::ng-deep .mdc-notched-outline__trailing,
+  .team-selector ::ng-deep .mdc-notched-outline__notch {
+    border-color: rgba(139, 158, 249, 0.3) !important;
+  }
+
+  .team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+  .team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+  .team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+    border-color: #8b9ef9 !important;
+  }
+}
+
+.team-selector ::ng-deep .label-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+@media (min-width: 480px) {
+  .header-top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .team-selector {
+    width: auto;
+    min-width: 220px;
+    max-width: 300px;
+  }
+
+  .header {
+    padding-bottom: 20px;
+  }
+}
+
+.version {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant, #666);
+}
+
+.content {
+  width: 100%;
+}
+
+.placeholder {
+  padding: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--mat-sys-on-surface-variant, #666);
 }
 
 .footer {
@@ -39,11 +155,14 @@ h1 {
   font-size: 12px;
 }
 
-.version {
-  opacity: 0.7;
+.github-corner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  border: 0;
+  z-index: 1000;
 }
 
-/* GitHub Corner Ribbon */
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
 }
@@ -68,4 +187,3 @@ h1 {
     animation: octocat-wave 560ms ease-in-out;
   }
 }
-

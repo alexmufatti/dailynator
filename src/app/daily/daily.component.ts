@@ -1,4 +1,5 @@
 import {Component, computed, effect, inject, OnDestroy, signal, OnInit} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {MatButton} from "@angular/material/button";
 import {MatCard, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatList, MatListItem} from "@angular/material/list";
@@ -6,9 +7,6 @@ import {StorageService} from '../storage.service';
 import {Participant} from '../models/Participant';
 import {CommunicationService} from '../communication.service';
 import {Subscription} from 'rxjs';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
-import {MatOption} from '@angular/material/core';
-import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {Team} from '../models/Team';
 import { DailySubtitleService, DailySubtitleResult } from '../services/daily-subtitle.service';
 import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType';
@@ -16,16 +14,13 @@ import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType'
 @Component({
   selector: 'app-daily',
   imports: [
+    CommonModule,
     MatButton,
     MatCard,
     MatCardHeader,
     MatCardTitle,
     MatList,
-    MatListItem,
-    MatFormField,
-    MatLabel,
-    MatSelect,
-    MatOption
+    MatListItem
   ],
   templateUrl: './daily.component.html',
   styleUrl: './daily.component.css'
@@ -44,6 +39,7 @@ export class DailyComponent implements OnDestroy, OnInit {
   protected done: Participant[] = [];
   protected teams = signal<Team[]>([]);
   protected activeTeamId = signal<string>('');
+  protected activeTeam = computed(() => this.teams().find((team) => team.id === this.activeTeamId()));
   private readonly communicationSubscription: Subscription;
   private readonly teamsEffect?: ReturnType<typeof effect>;
   dailyJoke?: string;
@@ -135,10 +131,5 @@ export class DailyComponent implements OnDestroy, OnInit {
 
       this.next.set(this.remaining[index]);
     }
-  }
-
-  protected selectTeam(event: MatSelectChange) {
-    this.storage.setActiveTeam(event.value);
-    this.communication.changeMessage('team-changed');
   }
 }

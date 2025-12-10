@@ -4,9 +4,8 @@ import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
-import {MatLine} from "@angular/material/core";
 import {MatList, MatListItem} from "@angular/material/list";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {NgClass} from "@angular/common";
 import {Participant} from '../models/Participant';
 import {StorageService} from '../storage.service';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
@@ -15,7 +14,9 @@ import {CommunicationService} from '../communication.service';
 import {Team} from '../models/Team';
 import {MatDivider} from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType';
+import { SUBTITLE_SOURCE_OPTIONS } from '../models/subtitle-source-options';
 
 @Component({
   selector: 'app-config',
@@ -27,18 +28,16 @@ import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType'
     MatIconButton,
     MatInput,
     MatLabel,
-    MatLine,
     MatList,
     MatListItem,
-    NgForOf,
     NgClass,
     MatCard,
     MatCardContent,
     MatCardTitle,
     MatCardHeader,
-    NgIf,
     MatDivider,
     MatSelectModule,
+    MatSnackBarModule,
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.css'
@@ -46,6 +45,7 @@ import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType'
 export class ConfigComponent {
   private readonly storage = inject(StorageService);
   private readonly communication = inject(CommunicationService);
+  private readonly snackBar = inject(MatSnackBar);
 
   protected newParticipant = signal('');
   protected people: Participant[] = [];
@@ -55,13 +55,13 @@ export class ConfigComponent {
   protected renamingTeamId = signal<string | null>(null);
   protected renameValue = signal('');
   protected selectedTeam = computed(() => this.storage.getTeam(this.activeTeamId()));
+  protected readonly subtitleSourceOptions = SUBTITLE_SOURCE_OPTIONS;
 
-  protected readonly subtitleSourceOptions: { value: DailySubtitleSourceType; label: string }[] = [
-    { value: 'joke', label: 'Joke' },
-    { value: 'motivational', label: 'Motivational' },
-    { value: 'random', label: 'Random' },
-    { value: 'disabled', label: 'None' },
-  ];
+  // Sprint Capacity
+  protected workingDays = signal<number>(10);
+  protected averageVelocity = signal<number>(0);
+  protected vacationDaysMap = signal<Map<string, number>>(new Map());
+  protected estimatedVelocity = computed(() => this.calculateEstimatedVelocity());
 
   constructor() {
     effect(() => {
@@ -72,7 +72,53 @@ export class ConfigComponent {
       if (this.renamingTeamId() && this.renamingTeamId() === activeTeam?.id) {
         this.renameValue.set(activeTeam?.name ?? '');
       }
+
+      // Load sprint capacity data
+      this.loadSprintCapacity();
     });
+  }
+
+  private loadSprintCapacity() {
+    const activeTeam = this.storage.getActiveTeam();
+    if (activeTeam?.sprintCapacity) {
+      const capacity = activeTeam.sprintCapacity;
+      this.workingDays.set(capacity.workingDays);
+      this.averageVelocity.set(capacity.averageVelocity);
+
+      const map = new Map<string, number>();
+      capacity.vacationDays.forEach(vd => {
+        map.set(vd.participantName, vd.vacationDays);
+      });
+      this.vacationDaysMap.set(map);
+    } else {
+      // Reset to defaults
+      this.workingDays.set(10);
+      this.averageVelocity.set(0);
+      this.vacationDaysMap.set(new Map());
+    }
+  }
+
+  private calculateEstimatedVelocity(): number {
+    const totalWorkingDays = this.workingDays();
+    const peopleCount = this.people.length;
+
+    if (peopleCount === 0 || totalWorkingDays === 0 || this.averageVelocity() === 0) {
+      return 0;
+    }
+
+    // Calculate total vacation days
+    let totalVacationDays = 0;
+    this.people.forEach(p => {
+      totalVacationDays += this.vacationDaysMap().get(p.name) || 0;
+    });
+
+    // Calculate available person-days
+    const totalPersonDays = peopleCount * totalWorkingDays;
+    const availablePersonDays = totalPersonDays - totalVacationDays;
+
+    // Calculate estimated velocity
+    const velocityPerPersonDay = this.averageVelocity() / (peopleCount * totalWorkingDays);
+    return Math.round(velocityPerPersonDay * availablePersonDays * 10) / 10;
   }
 
   protected addParticipant() {
@@ -144,5 +190,10 @@ export class ConfigComponent {
     if (team.id === this.activeTeamId()) {
       this.communication.changeMessage('daily-subtitle-config-changed');
     }
+    this.showSubtitleSavedToast(team.name);
+  }
+
+  private showSubtitleSavedToast(teamName: string) {
+    this.snackBar.open(`Sorgente aggiornata per ${teamName}`, 'OK', { duration: 3000 });
   }
 }
