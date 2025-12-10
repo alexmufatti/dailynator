@@ -117,6 +117,13 @@ mat-card-title {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+@media (prefers-color-scheme: dark) {
+  .team-summary {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
 .summary-copy h2 {
   margin: 0;
   font-size: 1.4rem;
@@ -133,6 +140,16 @@ mat-card-title {
 .helper-text {
   color: rgba(0, 0, 0, 0.7);
   margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .eyebrow {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .helper-text {
+    color: rgba(255, 255, 255, 0.7);
+  }
 }
 
 .summary-actions {
@@ -185,11 +202,18 @@ mat-card-title {
 
 .participant-copy .name {
   font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
 }
 
 .participant-copy .name.away {
   text-decoration: line-through;
   color: rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  .participant-copy .name {
+    color: rgba(255, 255, 255, 0.87);
+  }
 }
 
 .presence-chip {
@@ -206,6 +230,22 @@ mat-card-title {
   color: rgba(0, 0, 0, 0.6);
 }
 
+@media (prefers-color-scheme: dark) {
+  .participant-copy .name.away {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .presence-chip {
+    background: rgba(139, 158, 249, 0.2);
+    color: #8b9ef9;
+  }
+
+  .presence-chip.away {
+    background: rgba(158, 158, 158, 0.3);
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
 .item-button-container {
   display: flex;
   gap: 6px;
@@ -215,6 +255,12 @@ mat-card-title {
   font-style: italic;
   color: rgba(0, 0, 0, 0.6);
   margin: 16px 0 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .participants-empty {
+    color: rgba(255, 255, 255, 0.6);
+  }
 }
 
 @media (min-width: 640px) {

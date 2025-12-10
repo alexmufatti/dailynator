@@ -1,18 +1,5 @@
 <div class="daily-container">
   <header class="panel-header">
-    <div class="team-source">
-      <mat-form-field appearance="outline" class="team-field">
-        <mat-label>Team</mat-label>
-        <mat-select [value]="activeTeamId()" (selectionChange)="selectTeam($event)">
-          @for (team of teams(); track team.id) {
-          <mat-option [value]="team.id">
-            {{ team.name }}
-          </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <!-- Subtitle source selection handled in config view. -->
-    </div>
     @if (dailyJoke) {
       <div class="daily-joke-wrapper">
         <p class="daily-joke">{{ dailyJoke }}</p>

@@ -4,6 +4,7 @@ import { Participant } from './models/Participant';
 import { Team } from './models/Team';
 import { DailySubtitleConfigService } from './services/daily-subtitleConfig.service';
 import type { DailySubtitleSourceType } from './models/DailySubtitleSourceType';
+import { SprintCapacity } from './models/SprintCapacity';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,7 @@ export class StorageService {
       name: team.name ?? 'Team 1',
       participants: Array.isArray(team.participants) ? team.participants : [],
       subtitleSource: team.subtitleSource ?? defaultSource,
+      sprintCapacity: team.sprintCapacity,
     }));
 
     const fallbackActiveId = teams[0].id;
@@ -151,5 +153,13 @@ export class StorageService {
 
   setTeamSubtitleSource(id: string, source: DailySubtitleSourceType) {
     this.patchTeam(id, (team) => ({ ...team, subtitleSource: source }));
+  }
+
+  setTeamSprintCapacity(id: string, capacity: SprintCapacity) {
+    this.patchTeam(id, (team) => ({ ...team, sprintCapacity: capacity }));
+  }
+
+  getTeamSprintCapacity(id: string): SprintCapacity | undefined {
+    return this.getTeam(id)?.sprintCapacity;
   }
 }

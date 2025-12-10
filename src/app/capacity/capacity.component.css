@@ -1,0 +1,163 @@
+.capacity-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.panel-card {
+  width: 100%;
+}
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.description {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.9rem;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  .description {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+mat-divider {
+  margin: 8px 0;
+}
+/* Vacation Section */
+.vacation-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 8px 0;
+}
+.vacation-section h4 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+@media (prefers-color-scheme: dark) {
+  .vacation-section h4 {
+    color: rgba(255, 255, 255, 0.87);
+  }
+}
+.vacation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+}
+.participant-name {
+  flex: 1;
+  font-weight: 400;
+  font-size: 0.95rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+@media (prefers-color-scheme: dark) {
+  .participant-name {
+    color: rgba(255, 255, 255, 0.87);
+  }
+}
+
+.vacation-input {
+  width: 140px;
+  flex-shrink: 0;
+}
+/* Capacity Result */
+.capacity-result {
+  background: linear-gradient(135deg, rgba(63, 81, 181, 0.08), rgba(33, 150, 243, 0.08));
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  margin: 8px 0;
+}
+.capacity-result h3 {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.7);
+}
+.velocity-value {
+  font-size: 3rem;
+  font-weight: 600;
+  color: #3f51b5;
+  margin: 0;
+  line-height: 1;
+}
+.hint-text {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 12px 0 0;
+  font-style: italic;
+}
+.empty-text {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 8px 0;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .capacity-result {
+    background: linear-gradient(135deg, rgba(139, 158, 249, 0.12), rgba(103, 178, 255, 0.12));
+  }
+
+  .capacity-result h3 {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .velocity-value {
+    color: #8b9ef9;
+  }
+
+  .hint-text {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .empty-text {
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+button {
+  width: 100%;
+}
+button mat-icon {
+  margin-right: 8px;
+}
+/* Responsive adjustments */
+@media (min-width: 640px) {
+  .capacity-shell {
+    padding: 24px;
+  }
+  .vacation-row {
+    padding: 10px 0;
+  }
+  .vacation-input {
+    width: 160px;
+  }
+}
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

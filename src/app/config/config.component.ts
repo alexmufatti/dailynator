@@ -57,6 +57,12 @@ export class ConfigComponent {
   protected selectedTeam = computed(() => this.storage.getTeam(this.activeTeamId()));
   protected readonly subtitleSourceOptions = SUBTITLE_SOURCE_OPTIONS;
 
+  // Sprint Capacity
+  protected workingDays = signal<number>(10);
+  protected averageVelocity = signal<number>(0);
+  protected vacationDaysMap = signal<Map<string, number>>(new Map());
+  protected estimatedVelocity = computed(() => this.calculateEstimatedVelocity());
+
   constructor() {
     effect(() => {
       this.teams.set(this.storage.getTeams()());
@@ -66,7 +72,53 @@ export class ConfigComponent {
       if (this.renamingTeamId() && this.renamingTeamId() === activeTeam?.id) {
         this.renameValue.set(activeTeam?.name ?? '');
       }
+
+      // Load sprint capacity data
+      this.loadSprintCapacity();
     });
+  }
+
+  private loadSprintCapacity() {
+    const activeTeam = this.storage.getActiveTeam();
+    if (activeTeam?.sprintCapacity) {
+      const capacity = activeTeam.sprintCapacity;
+      this.workingDays.set(capacity.workingDays);
+      this.averageVelocity.set(capacity.averageVelocity);
+
+      const map = new Map<string, number>();
+      capacity.vacationDays.forEach(vd => {
+        map.set(vd.participantName, vd.vacationDays);
+      });
+      this.vacationDaysMap.set(map);
+    } else {
+      // Reset to defaults
+      this.workingDays.set(10);
+      this.averageVelocity.set(0);
+      this.vacationDaysMap.set(new Map());
+    }
+  }
+
+  private calculateEstimatedVelocity(): number {
+    const totalWorkingDays = this.workingDays();
+    const peopleCount = this.people.length;
+
+    if (peopleCount === 0 || totalWorkingDays === 0 || this.averageVelocity() === 0) {
+      return 0;
+    }
+
+    // Calculate total vacation days
+    let totalVacationDays = 0;
+    this.people.forEach(p => {
+      totalVacationDays += this.vacationDaysMap().get(p.name) || 0;
+    });
+
+    // Calculate available person-days
+    const totalPersonDays = peopleCount * totalWorkingDays;
+    const availablePersonDays = totalPersonDays - totalVacationDays;
+
+    // Calculate estimated velocity
+    const velocityPerPersonDay = this.averageVelocity() / (peopleCount * totalWorkingDays);
+    return Math.round(velocityPerPersonDay * availablePersonDays * 10) / 10;
   }
 
   protected addParticipant() {

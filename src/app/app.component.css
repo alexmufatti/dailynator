@@ -9,18 +9,26 @@ h1 {
 }
 
 .shadow-text {
-  font-size: 50px;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: 700;
   color: blue;
   text-shadow: 2px 2px 0 orange, 4px 4px 0 yellow, 6px 6px 0 green, 8px 8px 0 red, 10px 10px 0 purple;
+}
+
+@media (min-width: 480px) {
+  .shadow-text {
+    font-size: 2.2rem;
+  }
 }
 
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 4px;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
 
   & h1 {
     font-size: 2rem;
@@ -32,6 +40,94 @@ h1 {
     font-size: 1.6rem;
     margin: 1rem;
     font-weight: 600;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.header-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.team-selector {
+  width: 100%;
+  max-width: 100%;
+}
+
+.team-selector ::ng-deep .mat-mdc-text-field-wrapper {
+  background: rgba(63, 81, 181, 0.04);
+  border-radius: 8px;
+}
+
+.team-selector ::ng-deep .mdc-notched-outline__leading,
+.team-selector ::ng-deep .mdc-notched-outline__trailing,
+.team-selector ::ng-deep .mdc-notched-outline__notch {
+  border-color: rgba(63, 81, 181, 0.2) !important;
+}
+
+.team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+.team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+  border-color: #3f51b5 !important;
+  border-width: 2px !important;
+}
+
+.team-selector ::ng-deep .mat-mdc-floating-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .team-selector ::ng-deep .mat-mdc-text-field-wrapper {
+    background: rgba(103, 126, 234, 0.08);
+  }
+
+  .team-selector ::ng-deep .mdc-notched-outline__leading,
+  .team-selector ::ng-deep .mdc-notched-outline__trailing,
+  .team-selector ::ng-deep .mdc-notched-outline__notch {
+    border-color: rgba(139, 158, 249, 0.3) !important;
+  }
+
+  .team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+  .team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing,
+  .team-selector ::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch {
+    border-color: #8b9ef9 !important;
+  }
+}
+
+.team-selector ::ng-deep .label-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+@media (min-width: 480px) {
+  .header-top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .team-selector {
+    width: auto;
+    min-width: 220px;
+    max-width: 300px;
+  }
+
+  .header {
+    padding-bottom: 20px;
   }
 }
 

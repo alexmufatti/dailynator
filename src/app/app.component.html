@@ -16,15 +16,34 @@
 
   <div class="app-shell">
     <header class="header">
+      <div class="header-top">
         <h1 class="shadow-text">{{ title }}</h1>
-        @if (activeTeam()?.name) {
-          <h2>{{ activeTeam()?.name }} </h2>
-        }
+        <mat-form-field appearance="outline" class="team-selector">
+          <mat-label>
+            <mat-icon class="label-icon">groups</mat-icon>
+            Team
+          </mat-label>
+          <mat-select [value]="activeTeamId()" (selectionChange)="selectTeam($event)">
+            @for (team of teams(); track team.id) {
+              <mat-option [value]="team.id">
+                {{ team.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
     </header>
     <div class="content">
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
         <mat-tab label="Daily">
           <app-daily/>
+        </mat-tab>
+        <mat-tab label="Capacity">
+          @defer (on viewport) {
+            <app-capacity/>
+          } @placeholder {
+            <div class="placeholder">Click to load capacity...</div>
+          }
         </mat-tab>
         <mat-tab label="Config">
           @defer (on viewport) {

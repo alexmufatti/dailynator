@@ -1,0 +1,70 @@
+<div class="capacity-shell">
+  <mat-card class="panel-card">
+    <mat-card-header>
+      <mat-card-title>Sprint Capacity Calculator</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-stack">
+        <p class="description">
+          Calculate the estimated velocity for the current sprint based on working days, team size, and vacation days.
+        </p>
+        <div class="form-section">
+          <mat-form-field appearance="outline">
+            <mat-label>Working days in sprint</mat-label>
+            <input matInput 
+                   type="number" 
+                   [ngModel]="workingDays()" 
+                   (ngModelChange)="workingDays.set($event)" 
+                   min="1" 
+                   max="30"
+                   placeholder="e.g., 10"/>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Average velocity (last sprints)</mat-label>
+            <input matInput 
+                   type="number" 
+                   [ngModel]="averageVelocity()" 
+                   (ngModelChange)="averageVelocity.set($event)" 
+                   min="0" 
+                   step="0.5"
+                   placeholder="e.g., 35"/>
+          </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="vacation-section">
+          <h4>Vacation days per participant</h4>
+          @for (participant of people; track participant.name) {
+            <div class="vacation-row">
+              <span class="participant-name">{{ participant.name }}</span>
+              <mat-form-field appearance="outline" class="vacation-input">
+                <mat-label>Days off</mat-label>
+                <input matInput 
+                       type="number" 
+                       [ngModel]="getVacationDays(participant.name)"
+                       (ngModelChange)="updateVacationDays(participant.name, $event)"
+                       min="0" 
+                       [max]="workingDays()"
+                       placeholder="0"/>
+              </mat-form-field>
+            </div>
+          }
+          @empty {
+            <p class="empty-text">Add participants in the Config tab to set their vacation days</p>
+          }
+        </div>
+        <mat-divider></mat-divider>
+        <div class="capacity-result">
+          <h3>Estimated velocity for this sprint</h3>
+          <div class="velocity-value">{{ estimatedVelocity() }}</div>
+          @if (estimatedVelocity() === 0 && people.length > 0) {
+            <p class="hint-text">Enter working days and average velocity to see the estimate</p>
+          }
+        </div>
+        <button mat-flat-button color="primary" (click)="saveSprintCapacity()">
+          <mat-icon>save</mat-icon>
+          Save capacity
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

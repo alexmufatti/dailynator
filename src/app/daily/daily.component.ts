@@ -7,9 +7,6 @@ import {StorageService} from '../storage.service';
 import {Participant} from '../models/Participant';
 import {CommunicationService} from '../communication.service';
 import {Subscription} from 'rxjs';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
-import {MatOption} from '@angular/material/core';
-import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {Team} from '../models/Team';
 import { DailySubtitleService, DailySubtitleResult } from '../services/daily-subtitle.service';
 import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType';
@@ -23,11 +20,7 @@ import type { DailySubtitleSourceType } from '../models/DailySubtitleSourceType'
     MatCardHeader,
     MatCardTitle,
     MatList,
-    MatListItem,
-    MatFormField,
-    MatLabel,
-    MatSelect,
-    MatOption
+    MatListItem
   ],
   templateUrl: './daily.component.html',
   styleUrl: './daily.component.css'
@@ -138,10 +131,5 @@ export class DailyComponent implements OnDestroy, OnInit {
 
       this.next.set(this.remaining[index]);
     }
-  }
-
-  protected selectTeam(event: MatSelectChange) {
-    this.storage.setActiveTeam(event.value);
-    this.communication.changeMessage('team-changed');
   }
 }
